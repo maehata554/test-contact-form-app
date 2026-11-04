@@ -1,7 +1,6 @@
 <?php
 
 use Laravel\Fortify\Features;
-use App\Providers\RouteServiceProvider;
 return [
 
     /*
@@ -74,7 +73,7 @@ return [
     */
 
     'home' => '/admin',
-
+    'redirects' => ['logout' => '/login'],
     /*
     |--------------------------------------------------------------------------
     | Fortify Routes Prefix / Subdomain
