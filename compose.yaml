@@ -1,3 +1,4 @@
+# cspell:ignore healthcheck laravel mysqladmin phpmyadmin VITE WWWGROUP WWWUSER
 services:
     laravel.test:
         build:
