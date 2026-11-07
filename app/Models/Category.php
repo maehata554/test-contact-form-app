@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Category extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'content',
+    ];
     public function contacts():HasMany
     {
         return $this->hasMany(Contact::class);

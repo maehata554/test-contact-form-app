@@ -15,7 +15,7 @@ class Contact extends Model
         'last_name',
         'gender',
         'email',
-        'tel',
+        'telephone',
         'address',
         'building',
         'detail'

@@ -22,9 +22,10 @@ class TagRequest extends FormRequest
      */
     public function rules(): array
     {
-
+        $tag = $this->route('tag');
+        $tagId = $tag instanceof \App\Models\Tag ? $tag->id : $tag;
         return [
-            'name' => 'required|string|max:50|unique',//
+            'name' => 'required|string|max:50|unique:tags,name,' . $tagId
         ];
     }
 

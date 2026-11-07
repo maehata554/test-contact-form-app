@@ -17,18 +17,35 @@ class ContactController extends Controller
     //フォーム入力
     public function confirm(ContactRequest $request)
     {
-        $contactData = $request->validated();
-        $category = Category::find($contactData['category_id']);
-        $contactData['category_name'] = $category ? $category->name : '';
 
-        return view('contact.confirm', compact('contactData'));
+        $validated = $request->validated();
+
+
+        $category = Category::find($validated['category_id']);
+
+        $tags = collect();
+        if (!empty($validated['tag_ids'])) {
+            $tags = Tag::whereIn('id', $validated['tag_ids'])->get();
+        }
+        return view('contact.confirm', compact('validated', 'category', 'tags'));
     }
     public function store(ContactRequest $request)
     {
-        $contact = Contact::create($request->validated());
-        if ($request->has('tags')) {
-            $contact->tags()->attach($request->input('tags'));
+        $validated = $request->validated();
+        if (isset($validated['tel'])) {
+            $validated['telephone'] = $validated['tel'];
+            unset($validated['tel']);
         }
+
+        $tagIds = $validated['tag_ids'] ?? [];
+        unset($validated['tag_ids']);
+
+        $contact = Contact::create($validated);
+
+        if (!empty($tagIds)) {
+            $contact->tags()->attach($tagIds);
+        }
+
         return redirect()->route('contact.thanks');
     }
 }

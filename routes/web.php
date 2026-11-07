@@ -21,18 +21,21 @@ use App\Http\Controllers\ContactController;
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 //バリデーションを通過した後確認ページに移る
 Route::post('/contacts/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
-//確認ページから送信したのちサンクスページへ
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
-//サンクスページ表示
+Route::post('/contacts', [ContactController::class, 'store'])->name('contact.store');
+
 Route::get('/thanks', function () {
     return view('contact.thanks');
 })->name('contact.thanks');
+Route::get('/', [ContactController::class, 'index'])->name('contact.index');
 
 Route::middleware('auth')->group(function () {
 
 
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-    Route::post('/tags', [TagController::class, 'store']);
-    Route::get('/tags/{tag}/edit', [TagController::class, 'edit']);
-    Route::patch('/tags/{tag}', [TagController::class, 'update']);
+    Route::post('/admin/tags', [TagController::class, 'store'])->name('tags.store');
+    Route::get('/admin/tags/{tag}/edit', [TagController::class, 'edit'])->name('tags.edit');
+    Route::put('/admin/tags/{tag}', [TagController::class, 'update'])->name('tags.update');
+
+    Route::get('/admin/contacts/{contact}', [AdminController::class, 'show'])->name('admin.show');
+    Route::delete('/admin/contacts/{contact}', [AdminController::class, 'destroy'])->name('admin.contacts.destroy');
 });

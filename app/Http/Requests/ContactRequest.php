@@ -14,6 +14,19 @@ class ContactRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        $tel1 = $this->input('tel1');
+        $tel2 = $this->input('tel2');
+        $tel3 = $this->input('tel3');
+
+        if ($tel1 || $tel2 || $tel3) {
+            $this->merge([
+                'tel' => $tel1 . $tel2 . $tel3,
+            ]);
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *

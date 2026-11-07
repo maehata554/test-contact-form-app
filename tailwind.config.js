@@ -2,9 +2,9 @@
 export default {
   content: [
 
-  "./resource/**/*.blade.php",
-  "./resources/**/*.js ",
-  "./resource/**/*.vue",
+  "./resources/**/*.blade.php",
+  "./resources/**/*.js",
+  "./resources/**/*.vue",
   ],
   theme: {
     extend: {},
