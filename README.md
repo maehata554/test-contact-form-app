@@ -53,7 +53,7 @@ phpmyadmin:
 - sail artisan migrate --seedでテーブルを作成し、初期データを投入する。
 
 ## ER図
-[text](../../Desktop/リレーションシップの定義.png.zip)
+![alt text](リレーションシップ.jpg)
 
 ## 使用技術および環境
 - MacBook
