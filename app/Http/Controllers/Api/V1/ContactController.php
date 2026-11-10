@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Vi\IndexContactRequest;
 use App\Http\Requests\Api\V1\StoreRequest;
 use App\Http\Requests\Api\V1\UpdateRequest;
-use App\Http\Resources\ContactResource;
+use App\Http\Resources\Api\V1\ContactResource;
 use App\Models\Contact;
 
 class ContactController extends Controller

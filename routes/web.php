@@ -38,4 +38,5 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/contacts/{contact}', [AdminController::class, 'show'])->name('admin.show');
     Route::delete('/admin/contacts/{contact}', [AdminController::class, 'destroy'])->name('admin.contacts.destroy');
+    Route::get('/contacts/export', [AdminController::class, 'export'])->name('admin.contacts.export');
 });

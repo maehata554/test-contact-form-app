@@ -1,66 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# COACHTECH お問い合せフォーム
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 概要
 
-## About Laravel
+COACHTECHの確認テストで作成した成果物です。
+一般ユーザーが利用するお問い合せフォームで、管理者はログイン後にその内容について確認・管理することができるものです。
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+これまでに学習したバックエンド技術を実践的にアウトプットし、復習箇所を洗い出すことを目的としています。
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 環境構築手順
+- Dockerコマンドを実行し、Laravel10.xを指定してプロジェクトを作成する。
+- プロジェクト作成後、contact-form-appに移動し、Laravel Sailをインストールする。
+- Sailの設定をパブリッシュ(MySQLを選択)する
+- .envファイルを開き、データベース接続情報が一致しているかを確認する。
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=sail
+DB_PASSWORD=password
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- フロントエンドは提供された物を使用する(今回はTailwind CSS)
+- sail npm installでNPM依存パッケージをインストールする
+- sail npm install -D tailwindcss@^3.4.0 postcss autoprefixer
+- sail npm install alpinejs
+- 上記二つのコマンドでTailwind CSSをインストールする。
+- sail npx tailwindcss init -pで設定ファイルを生成する。
+- Tailwind CSSのテンプレートパスを設定する。content: []の中身を、"./resources/**/*.blade.php",
+    "./resources/**/*.js ",
+   "./resources/**/*.vue",にする。
 
-## Learning Laravel
+- 提供されたリポジトリからresourceフォルダをダウンロード、Finderで開く。（contact-form-appのresourceフォルダは削除しておく）。
+- 提供された方のresourceフォルダを、contact-form-appのプロジェクトフォルダにコピーする。
+- sail npm run devをターミナルで入力し、実行したままにする。
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- compose.yamlを開き、myaqlサービスの後に以下の設定をする。(mysqlの、timeout: 5sの後に追加する、段落はmysqlと同じところで)
+phpmyadmin:
+        image: 'phpmyadmin:latest'
+        ports:
+            - '${FORWARD_PHPMYADMIN_PORT:-8080}:80'
+        environment:
+            PMA_HOST: mysql
+            PMA_USER: '${DB_USERNAME}'
+            PMA_PASSWORD: '${DB_PASSWORD}'
+        networks:
+            - sail
+        depends_on:
+            - mysql
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- ./vendor/bin/sail up -dでSailをバックグラウンドで起動
+- echo "alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'" >> ~/.zshrc　でエイリアスを設定して"sail"だけでコマンドを実行できるようにする。
+- sail artisan key:generate でアプリケーションキーを作成する。
+- sail artisan migrate --seedでテーブルを作成し、初期データを投入する。
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## ER図
+![alt text](リレーションシップの定義.png)
 
-## Laravel Sponsors
+## 使用技術および環境
+- MacBook
+- PHP 8.2
+- Laravel 10.50.4
+- DB MySQL 8.0
+- Webサーバー　Nginx
+- フロントエンド Vite, Tailwind CSS^3.4.0
+- 開発ツール Docker, Laravel, Sail, phpMyAdmin
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## APIエンドポイント一覧
+- GET   /api/v1/contacts
+- GET   /api/v1/contacts/{contact}
+- POST   /api/v1/contacts
+- PUT   /api/v1/contacts/{contact}
+- DELETE   /api/v1/contacts/{contact}
 
-### Premium Partners
+## 動作確認
+- http://localhost/
+- http://localhost/login
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 製作者
+前畑　野々花

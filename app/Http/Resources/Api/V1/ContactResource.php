@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Api\V1;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Api\V1\CategoryResource;
+use App\Http\Resources\Api\V1\TagResource;
 
 class ContactResource extends JsonResource
 {
@@ -16,23 +18,18 @@ class ContactResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'category_id' => $this->category_id,
-            'category' => $this->whenLoaded('category', function () {
-                return [
-                    'id' => $this->category->id,
-                    'content' => $this->category->content,
-                ];
-            }),
-            'tags' => $this->whenLoaded('tags'),
+            'category' => new CategoryResource($this->whenLoaded('category')),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'gender' => $this->gender,
             'email' => $this->email,
-            'telephone' => $this->telephone,
+            'tel' => $this->telephone ?? $this->tel,
             'address' => $this->address,
+            'building' => $this->building,
             'detail' => $this->detail,
-            'created' => $this->created_at->toIso8601String(),
-            'updated_at' => $this->updated_at->toIso8601String(),
+            'tags' => TagResource::collection($this->whenLoaded('tags')),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
